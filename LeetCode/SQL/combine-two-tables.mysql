@@ -1,0 +1,7 @@
+// https://leetcode.com/problems/combine-two-tables
+
+select p.FirstName,p.LastName,A.City,A.State
+from Person p
+left outer join
+Address A 
+on p.PersonId=A.PersonId;
