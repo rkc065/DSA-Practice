@@ -1,19 +1,20 @@
 class Solution {
-    public int minDominoRotations(int[] tops, int[] bottoms) {
-        if (tops.length != bottoms.length) { return -1; }
-        int[] countA = new int[7]; // countA[i] records the occurrence of i in A.
-        int[] countB = new int[7]; // countB[i] records the occurrence of i in B.
-        int[] same = new int[7]; // same[k] records the occurrence of k, where k == A[i] == B[i].
-        for (int i = 0; i < tops.length; ++i) {
-            ++countA[tops[i]];
-            ++countB[bottoms[i]];
-            if (tops[i] == bottoms[i]) { ++same[tops[i]]; }
+    public int minDominoRotations(int[] A, int[] B) {
+         int[] cntA = new int[7], cntB = new int[7], cntSame = new int[7];
+        int n = A.length;
+        for (int i = 0; i < n; i++) {
+            int a = A[i], b = B[i];
+            cntA[a] += 1;
+            cntB[b] += 1;
+            if (a == b) cntSame[a] += 1;
         }
-        for (int i = 1; i < 7; ++i) {
-            if (countA[i] + countB[i] - same[i] == tops.length) {
-                return Math.min(countA[i], countB[i]) - same[i];
+        int ans = n;
+        for (int v = 1; v <= 6; v++) {
+            if (cntA[v] + cntB[v] - cntSame[v] == n) {
+                int minSwap = Math.min(cntA[v], cntB[v]) - cntSame[v];
+                ans = Math.min(ans, minSwap);
             }
-        }
-        return -1;
+        }   
+        return ans == n ? -1 : ans;
     }
 }
