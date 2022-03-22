@@ -1,23 +1,20 @@
 class Solution {
     public String getSmallestString(int n, int k) {
-         char c[] = new char[n];
-		// Frist fill up the array with least possible alphabet 'a'
-        for(int i=0;i<n;i++){
-            c[i]='a';
-            k--;
-        }        
-		// Now Start filling from the end to make string according to dictionary method
-        while(k!=0){
-            if(k>=25){
-                c[n-1]='z';
-                k-=25;
-                n--;
-            }else{
-                c[n-1] = (char)(97+k);
-                k=0;
-                n--;
-            }
+        k=k-n;
+        int zcount=k/25;
+        int value = k%25;
+        
+        char[] c=new char[n];
+        int i=n-1;
+        while(zcount-->0){
+            c[i--]='z';
         }
-        return String.valueOf(c);
+        if(value>0)
+            c[i--]=(char)('a'+value);
+        
+        while(i>=0){
+            c[i--]='a';
+        }
+        return new String(c);
     }
 }
