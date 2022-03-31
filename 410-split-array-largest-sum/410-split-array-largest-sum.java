@@ -1,36 +1,38 @@
 class Solution {
     public int splitArray(int[] nums, int m) {
-        int max = 0; long sum = 0;
+        
+        int minVal = Integer.MIN_VALUE, maxVal = 0;
         for (int num : nums) {
-            max = Math.max(num, max);
-            sum += num;
+            minVal = Math.max(minVal, num);
+            maxVal += num;
         }
-        if (m == 1) return (int)sum;
-        //binary search
-        long l = max; long r = sum;
-        while (l <= r) {
-            long mid = (l + r)/ 2;
-            if (valid(mid, nums, m)) {
-                r = mid - 1;
+
+        while (minVal < maxVal) {
+            int mid = minVal + (maxVal - minVal) / 2;
+            if (canSplit(mid, nums, m)) {
+                maxVal = mid;
             } else {
-                l = mid + 1;
+                minVal = mid + 1;
             }
         }
-        return (int)l;
+
+        return minVal;
     }
-    public boolean valid(long target, int[] nums, int m) {
-        int count = 1;
-        long total = 0;
-        for(int num : nums) {
-            total += num;
-            if (total > target) {
-                total = num;
-                count++;
-                if (count > m) {
+
+    private boolean canSplit(int upperBoundSubarraySum, int[] nums, int m) {
+
+        int curSubarraySum = 0, cntSubarray = 1;
+        for (int num : nums) {
+            curSubarraySum += num;
+            if (curSubarraySum > upperBoundSubarraySum) {
+                cntSubarray++;
+                curSubarraySum = num;
+                if (cntSubarray > m) {
                     return false;
                 }
             }
         }
-        return true;  
+
+        return true;
     }
 }
